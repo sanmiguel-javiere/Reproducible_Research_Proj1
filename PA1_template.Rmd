@@ -52,24 +52,63 @@ Average Daily Activity (Steps) per Interval
 ==============================================================
 
 ```{r, echo=TRUE}
-AverageActivityInterval <- aggregate(steps ~ interval, activity, FUN = mean, na.rm=TRUE)
-names(AverageActivityInterval) <- c("interval", "mean.steps")
-head(AverageActivityInterval)
-AverageActivityPlot <- ggplot(AverageActivityInterval, aes(x= interval, y = mean.steps))
+AverageInterval <- aggregate(steps ~ interval, activity, FUN = mean, na.rm=TRUE)
+names(AverageInterval) <- c("interval", "mean_steps")
+head(AverageInterval)
+AverageActivityPlot <- ggplot(AverageInterval, aes(x= interval, y = mean_steps))
 AverageActivityPlot + geom_line() + labs(title="Average Steps per Interval", x="Interval", y="Average Steps", color="blue")
 ```
 
 Which 5 minute interval has the highest average activity?
 ```{r, echo=TRUE}
-AverageActivityInterval[which.max(AverageActivityInterval$mean.steps), ]$interval
+AverageInterval[which.max(AverageInterval$mean_steps), ]$interval
 
 ```
 
 
+Inputting Missing Values
+======================================================
 
+Determine number of missing values
+```{r, echo=TRUE}
+TotalNAs <- sum(is.na(activity$steps))
+TotalNAs
+```
 
-## Imputing missing values
+Substitute missing values with mean per interval
 
+First I create a data frame matching intervals
+
+```{r, echo=TRUE}
+SubstituteSteps <- AverageInterval$mean_steps[match(activity$interval, AverageInterval$interval)]
+head(SubstituteSteps)
+```
+
+Second Create a new data set with NA substituted by mean value
+```{r, echo=TRUE}
+ModActivity <- transform(activity, steps=ifelse(is.na(activity$steps), SubstituteSteps, activity$steps))
+head(ModActivity)
+TotalNAs1 <- sum(is.na(ModActivity))
+TotalNAs1
+```
+
+Third create a histogram for the modified dataset
+```{r, echo=TRUE}
+ModTotalStepsDay <- aggregate(steps ~ date, ModActivity, FUN = sum, na.rm=TRUE)
+head(ModTotalStepsDay)
+ModTotalStepsPlot <- ggplot(ModTotalStepsDay, aes(steps))
+ModTotalStepsPlot + geom_histogram(bins=15, fill="green", color="black") + labs(title="Histogram Total Number of Steps per Day", x="Total Number of Steps", y="Frequency")
+```
+
+Modified mean of steps per day
+```{r, echo=TRUE}
+mean(ModTotalStepsDay$steps, na.rm = TRUE)
+```
+
+Modified median of steps per day
+```{r, echo=TRUE}
+median(ModTotalStepsDay$steps, na.rm = TRUE)
+```
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
