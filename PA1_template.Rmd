@@ -6,9 +6,10 @@ output: html_document
     keep_md: true
 ---
 
-## Loading ggplot2, dplyr package and data set.  Manipulating data to make it workable
+Loading ggplot2, dplyr package and data set.  Manipulating data to make it workable
+====================================================================================
 
-```{r}
+```{r, echo=TRUE}
 library(ggplot2)
 library(dplyr)
 activity <- read.csv("./activity.csv", sep = ",", header = TRUE)
@@ -23,6 +24,18 @@ names(activity)
 str(activity)
 summary(activity)
 ```
+
+Steps Histogram and mean total number of steps taken per day?
+===============================================================
+
+```{r, echo=TRUE}
+TotalStepsDay <- aggregate(steps ~ date, activity, FUN = sum, na.rm=TRUE)
+head(TotalStepsDay)
+##qplot(steps, data = TotalStepsDay, bins=15)
+TotalStepsPlot <- ggplot(TotalStepsDay, aes(steps))
+TotalStepsPlot + geom_histogram(bins=15, fill="red")
+```
+
 
 
 ## What is mean total number of steps taken per day?
