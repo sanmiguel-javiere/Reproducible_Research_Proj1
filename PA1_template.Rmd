@@ -6,9 +6,18 @@ output: html_document
     keep_md: true
 ---
 
+## Loading ggplot2 package and data set
+```{r}
+library(ggplot2)
+activity <- read.csv("./activity.csv", sep = ",", header = TRUE)
+head(activity)
+names(activity)
+str(activity)
+###Convert date format to date
+activity$date <- as.POSIXct(activity$date, "%Y-%m-%d")
 
-## Loading and preprocessing the data
 
+```
 
 
 ## What is mean total number of steps taken per day?
