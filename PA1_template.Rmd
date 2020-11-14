@@ -34,6 +34,8 @@ head(TotalStepsDay)
 ##qplot(steps, data = TotalStepsDay, bins=15)
 TotalStepsPlot <- ggplot(TotalStepsDay, aes(steps))
 TotalStepsPlot + geom_histogram(bins=15, fill="red")
+
+
 ```
 
 
