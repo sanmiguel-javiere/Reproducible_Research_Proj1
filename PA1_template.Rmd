@@ -119,3 +119,10 @@ Difference in activity between weekdays and weekend
 DayModActivity <- mutate(ModActivity, day_type = ifelse((weekday == "Saturday" | weekday == "Sunday"), "weekend", "weekday"))
 head(DayModActivity)
 ```
+
+*Aggregate steps by interval and day typ
+```{r, echo=TRUE}
+AvgDayModActivity <- aggregate(interval ~ steps + day_type, DayModActivity, FUN=mean )
+head(AvgDayModActivity)
+```
+
