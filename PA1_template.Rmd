@@ -6,17 +6,22 @@ output: html_document
     keep_md: true
 ---
 
-## Loading ggplot2 package and data set
+## Loading ggplot2, dplyr package and data set.  Manipulating data to make it workable
+
 ```{r}
 library(ggplot2)
+library(dplyr)
 activity <- read.csv("./activity.csv", sep = ",", header = TRUE)
 head(activity)
 names(activity)
 str(activity)
 ###Convert date format to date
 activity$date <- as.POSIXct(activity$date, "%Y-%m-%d")
-
-
+activity <- mutate(activity, weekday=weekdays(date))
+head(activity)
+names(activity)
+str(activity)
+summary(activity)
 ```
 
 
