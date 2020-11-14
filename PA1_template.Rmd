@@ -116,13 +116,20 @@ Difference in activity between weekdays and weekend
 
 *Create a new variable name day_type*
 ```{r, echo=TRUE}
-DayModActivity <- mutate(ModActivity, day_type = ifelse((weekday == "Saturday" | weekday == "Sunday"), "weekend", "weekday"))
+DayModActivity <- mutate(activity, day_type = ifelse((weekday == "Saturday" | weekday == "Sunday"), "weekend", "weekday"))
 head(DayModActivity)
 ```
 
 *Aggregate steps by interval and day typ
 ```{r, echo=TRUE}
-AvgDayModActivity <- aggregate(interval ~ steps + day_type, DayModActivity, FUN=mean )
+AvgDayModActivity <- aggregate(steps ~ interval + day_type, DayModActivity, FUN=mean, na.rm=TRUE )
 head(AvgDayModActivity)
 ```
 
+
+*Create a panel plot showing activity on weekdays against activity on weekends*
+```{r, echo=TRUE}
+DayModActivityPlot <- ggplot(AvgDayModActivity, aes(x=interval, y=steps, color=day_type))
+DayModActivityPlot + geom_line() + facet_grid(day_type~.) + labs(title = "Average Activity depending on  day of the week", x = "Interval", y = "Average Number of Steps")
+        
+```
