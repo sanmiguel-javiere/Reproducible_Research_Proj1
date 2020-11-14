@@ -25,7 +25,7 @@ str(activity)
 summary(activity)
 ```
 
-Steps Histogram and mean total number of steps taken per day?
+Total Steps Histogram total number of steps taken per day. Output mean, and median ?
 ===============================================================
 
 ```{r, echo=TRUE}
@@ -33,8 +33,13 @@ TotalStepsDay <- aggregate(steps ~ date, activity, FUN = sum, na.rm=TRUE)
 head(TotalStepsDay)
 ##qplot(steps, data = TotalStepsDay, bins=15)
 TotalStepsPlot <- ggplot(TotalStepsDay, aes(steps))
-TotalStepsPlot + geom_histogram(bins=15, fill="red")
+TotalStepsPlot + geom_histogram(bins=15, fill="red") + labs(title="Histogram Total Number of Steps per Day", x="Total Number of Steps", y="Frequency")
 
+##Here is the mean of steps per day
+mean(TotalStepsDay$steps, na.rm = TRUE)
+
+##Here is the median of steps per day
+median(TotalStepsDay$steps, na.rm = TRUE)
 
 ```
 
