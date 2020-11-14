@@ -16,7 +16,9 @@ activity <- read.csv("./activity.csv", sep = ",", header = TRUE)
 head(activity)
 names(activity)
 str(activity)
-###Convert date format to date
+```
+Convert date format to date
+```{r, echo=TRUE}
 activity$date <- as.POSIXct(activity$date, "%Y-%m-%d")
 activity <- mutate(activity, weekday=weekdays(date))
 head(activity)
@@ -33,21 +35,36 @@ TotalStepsDay <- aggregate(steps ~ date, activity, FUN = sum, na.rm=TRUE)
 head(TotalStepsDay)
 TotalStepsPlot <- ggplot(TotalStepsDay, aes(steps))
 TotalStepsPlot + geom_histogram(bins=15, fill="red", color="black") + labs(title="Histogram Total Number of Steps per Day", x="Total Number of Steps", y="Frequency")
+```
 
-##Here is the mean of steps per day
+Mean of steps per day
+```{r, echo=TRUE}
 mean(TotalStepsDay$steps, na.rm = TRUE)
+```
 
-##Here is the median of steps per day
+Median of steps per day
+```{r, echo=TRUE}
 median(TotalStepsDay$steps, na.rm = TRUE)
-
 ```
 
 
-## What is mean total number of steps taken per day?
+Average Daily Activity (Steps) per Interval
+==============================================================
 
+```{r, echo=TRUE}
+AverageActivityInterval <- aggregate(steps ~ interval, activity, FUN = mean, na.rm=TRUE)
+names(AverageActivityInterval) <- c("interval", "mean.steps")
+head(AverageActivityInterval)
+AverageActivityPlot <- ggplot(AverageActivityInterval, aes(x= interval, y = mean.steps))
+AverageActivityPlot + geom_line() + labs(title="Average Steps per Interval", x="Interval", y="Average Steps", color="blue")
+```
 
+Which 5 minute interval has the highest average activity?
+```{r, echo=TRUE}
+AverageActivityInterval[which.max(AverageActivityInterval$mean.steps), ]$interval
 
-## What is the average daily activity pattern?
+```
+
 
 
 
