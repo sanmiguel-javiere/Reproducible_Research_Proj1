@@ -6,6 +6,14 @@ output: html_document
     keep_md: true
 ---
 
+Remove Date Warnings - Global Option
+===================================================================================
+
+```{r}
+knitr::opts_chunk$set(warning=FALSE)
+```
+
+
 Loading ggplot2, dplyr package and data set.  Manipulating data to make it workable
 ====================================================================================
 
